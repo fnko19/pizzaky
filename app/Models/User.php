@@ -47,4 +47,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(pesanan::class);
     }
+
+    public function feedbacks()
+    {
+        return $this->hasMany(Feedback::class);
+    }
 }

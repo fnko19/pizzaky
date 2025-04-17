@@ -5,22 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class pizza extends Model
+class pizza_rasa_detail_pesanan extends Model
 {
     use HasFactory;
 
+    //protected $table = 'pizza_rasa_detail_pesanan';
+
     protected $fillable = [
-        'nama_pizza',
-        'image_path',
-        'harga',
-        'stok',
-        'deskripsi',
-        'max_rasa',
-        'ukuran',
+        'detail_pesanan_id',
+        'rasa_pizza_id',
     ];
 
     public function detailPesanan()
     {
         return $this->belongsTo(detailPesanan::class);
+    }
+
+    public function rasaPizza()
+    {
+        return $this->belongsTo(RasaPizza::class);
     }
 }
