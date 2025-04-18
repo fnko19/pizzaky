@@ -38,7 +38,8 @@ class PesananResource extends Resource
                         ->nullable(),
                     TextInput::make('total_harga')
                         ->label('Total Pesanan')
-                        ->nullable(),
+                        ->nullable()
+                        ->disabled(),
                     Select::make('opsi_pengambilan')
                         ->options([
                             'Ambil di Toko' => 'Ambil di Toko',
@@ -59,8 +60,12 @@ class PesananResource extends Resource
                                 'Selesai' => 'Selesai',
                             ]
                         )
-                        ->reactive()
-                        ->required(),
+                        ->reactive(),
+
+                    TextInput::make('whatsapp_driver')
+                        ->label('Nomor WhatsApp Driver')
+                        ->helperText('Gunakan format 628xxxxxx')
+                        ->tel(),
                 ])
             ]);
     }
@@ -87,12 +92,22 @@ class PesananResource extends Resource
                         'Selesai' => 'success',
                         default => 'gray',
                     }),
+                TextColumn::make('whatsapp_driver')
+                    ->label('Nomor Driver'),
+
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->label('')
+                    ->color('info')
+                    ->tooltip('Edit'),
+                Tables\Actions\DeleteAction::make()
+                    ->label('')
+                    ->color('danger')
+                    ->tooltip('Hapus'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

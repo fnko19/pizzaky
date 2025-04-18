@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PizzaResource\Pages;
-use App\Filament\Resources\PizzaResource\RelationManagers;
-use App\Models\pizza;
+use App\Filament\Resources\MakananLainResource\Pages;
+use App\Filament\Resources\MakananLainResource\RelationManagers;
+use App\Models\MakananLain;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -20,38 +20,30 @@ use Filament\Tables\Columns\ImageColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class PizzaResource extends Resource
+class MakananLainResource extends Resource
 {
-    protected static ?string $model = pizza::class;
+    protected static ?string $model = MakananLain::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-building-storefront';
+    protected static ?string $navigationIcon = 'heroicon-o-cake';
 
-    protected static ?string $navigationLabel = 'Daftar Pizza';
+    protected static ?string $navigationLabel = 'Makanan Lain';
 
-    protected static ?string $navigationGroup = 'Pizza';
+    protected static ?string $navigationGroup = 'Menu Lain';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 3;
 
-    public static ?string $label = 'Pizza';
+    public static ?string $label = 'Daftar Makanan Lain';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Card::make([
-                    TextInput::make('nama_pizza')->label('Nama Pizza')->required(),
+                    TextInput::make('nama_makanan')->label('Nama Makanan')->required(),
                     TextInput::make('harga')
                         ->label('Harga')
                         ->numeric()
                         ->required(),
-                    Select::make('ukuran')
-                        ->label('Tipe Ukuran')
-                        ->options([
-                            'S' => 'S',
-                            'M' => 'M',
-                            'L' => 'L',
-                            'Limo' => 'Limo',
-                        ]),
                     TextInput::make('stok')
                         ->label('Stok')
                         ->numeric()
@@ -59,12 +51,8 @@ class PizzaResource extends Resource
                     Textarea::make('deskripsi')
                         ->label('Deskripsi')
                         ->required(),
-                    TextInput::make('max_rasa')
-                        ->label('Batas Rasa')
-                        ->numeric()
-                        ->required(),
                     FileUpload::make('image_path')
-                        ->directory('storage')
+                        ->directory('public')
                         ->image()
                         ->required(),
                 ])
@@ -75,18 +63,14 @@ class PizzaResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('nama_pizza')->label('Nama Pizza')->sortable()->searchable(),
+                TextColumn::make('nama_makanan')->label('Nama Makanan')->sortable()->searchable(),
                 ImageColumn::make('image_path')
                     ->disk('public')
                     ->getStateUsing(fn ($record) => asset('storage/' . $record->image_path))
                     ->label('Gambar'),
                 TextColumn::make('harga')->label('Harga')->sortable(),
-                TextColumn::make('ukuran')->label('Tipe Ukuran')->sortable(),
                 TextColumn::make('stok')->label('Stok')->sortable(),
-                TextColumn::make('deskripsi')->label('Deskripsi')->limit(50),
-                TextColumn::make('max_rasa')->label('Batas Rasa')->sortable(),
-                TextColumn::make('created_at')->label('Dibuat')->dateTime(),
-                
+                TextColumn::make('deskripsi')->label('Deskripsi')->limit(50)
             ])
             ->filters([
                 //
@@ -99,7 +83,7 @@ class PizzaResource extends Resource
                 Tables\Actions\DeleteAction::make()
                     ->label('')
                     ->color('danger')
-                    ->tooltip('Hapus'), 
+                    ->tooltip('Hapus'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -118,9 +102,9 @@ class PizzaResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPizzas::route('/'),
-            'create' => Pages\CreatePizza::route('/create'),
-            'edit' => Pages\EditPizza::route('/{record}/edit'),
+            'index' => Pages\ListMakananLains::route('/'),
+            'create' => Pages\CreateMakananLain::route('/create'),
+            'edit' => Pages\EditMakananLain::route('/{record}/edit'),
         ];
     }
 }

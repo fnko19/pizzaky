@@ -14,6 +14,7 @@ class pesanan extends Model
         'total_harga',
         'status_pesanan',
         'opsi_pengambilan',
+        'whatsapp_driver',
     ];
 
     public function user()
@@ -23,11 +24,16 @@ class pesanan extends Model
 
     public function detailPesanan()
     {
-        return $this->belongsTo(detailPesanan::class);
+        return $this->hasMany(detailPesanan::class);
     }
 
     public function pembayaran()
     {
         return $this->belongsTo(pembayaran::class);
+    }
+
+    public function detailMakananLains()
+    {
+        return $this->hasMany(detailMakananLain::class);
     }
 }

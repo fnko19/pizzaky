@@ -26,6 +26,10 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-identification';
 
+    protected static ?string $navigationLabel = 'Daftar Akun';
+
+    public static ?string $label = 'Akun';
+
     public static function form(Form $form): Form
     {
         return $form
@@ -53,7 +57,14 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->label('')
+                    ->color('info')
+                    ->tooltip('Edit'),
+                Tables\Actions\DeleteAction::make()
+                    ->label('')
+                    ->color('danger')
+                    ->tooltip('Hapus'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

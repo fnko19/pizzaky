@@ -104,7 +104,14 @@ class PembayaranResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->label('')
+                    ->color('info')
+                    ->tooltip('Edit'),
+                Tables\Actions\DeleteAction::make()
+                    ->label('')
+                    ->color('danger')
+                    ->tooltip('Hapus'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

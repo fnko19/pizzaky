@@ -6,6 +6,8 @@ use App\Filament\Resources\DetailPesananResource\Pages;
 use App\Filament\Resources\DetailPesananResource\RelationManagers;
 use App\Models\detailPesanan;
 use App\Models\pesanan;
+use App\Models\pizza;
+use App\Models\RasaPizza;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -26,11 +28,65 @@ class DetailPesananResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
 
+    protected static ?string $navigationGroup = 'Pizza';
+
+    protected static ?int $navigationSort = 2;
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+                Card::make()->schema([
+                    Select::make('pesanan_id')
+                        ->label('Pesanan')
+                        ->relationship('pesanan', 'id')
+                        ->required(),
+
+                    Select::make('pizza_id')
+                        ->label('Jenis Pizza')
+                        ->relationship('pizza', 'nama_pizza')
+                        ->required()
+                        ->reactive(),
+                    
+                    Select::make('rasa_pizzas')
+                        ->label('Rasa Pizza')
+                        ->options(RasaPizza::all()->pluck('nama_rasa', 'id'))
+                        ->multiple()
+                        ->required()
+                        ->reactive()
+                        ->default(function ($get, $record) {
+                            return $record ? $record->rasaPizzas->pluck('id')->toArray() : [];
+                        })
+                        ->rule(function (callable $get) {
+                            $pizza = \App\Models\pizza::find($get('pizza_id'));
+                            $maxRasa = $pizza?->max_rasa ?? 1;
+                    
+                            return function ($attribute, $value, $fail) use ($maxRasa) {
+                                if (is_array($value) && count($value) > $maxRasa) {
+                                    $fail("Jumlah rasa maksimal untuk pizza ini adalah $maxRasa.");
+                                }
+                            };
+                        }),
+
+                    Select::make('ekstraTopping')
+                        ->label('Ekstra Topping')
+                        ->options([
+                            'Keju' => 'Keju',
+                        ]),
+
+                    Select::make('ekstraPinggiran')
+                        ->label('Ekstra Pinggiran')
+                        ->options([
+                            'Sosis' => 'Sosis',
+                            'Keju' => 'Keju',
+                        ]),
+
+                    TextInput::make('jumlah')
+                        ->numeric()
+                        ->required()
+                        ->reactive(),
+
+                ])
             ]);
     }
 
@@ -38,13 +94,30 @@ class DetailPesananResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('pesanan.id')->label('ID Pesanan'),
+                TextColumn::make('pizza.nama_pizza')->label('Ukuran Pizza'),
+                TextColumn::make('jumlah')->label('Jumlah'),
+                TextColumn::make('subtotal')->label('Subtotal'),
+                TextColumn::make('ekstraTopping')->label('Ekstra Topping'),
+                TextColumn::make('ekstraPinggiran')->label('Ekstra Pinggiran'),
+                TextColumn::make('rasaPizzas')
+                    ->label('Rasa Pizza')
+                    ->getStateUsing(function ($record) {
+                        return $record->rasaPizzas->pluck('nama_rasa')->join(', ');
+                }),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->label('')
+                    ->color('info')
+                    ->tooltip('Edit'),
+                Tables\Actions\DeleteAction::make()
+                    ->label('')
+                    ->color('danger')
+                    ->tooltip('Hapus'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

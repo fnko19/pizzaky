@@ -14,6 +14,9 @@ class EditPizza extends EditRecord
     {
         return [
             Actions\DeleteAction::make(),
+            Actions\Action::make('back')
+            ->label('Kembali')
+            ->url(route('filament.admin.resources.pizzas.index')),
         ];
     }
 }
