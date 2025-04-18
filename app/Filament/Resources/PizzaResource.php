@@ -55,7 +55,7 @@ class PizzaResource extends Resource
                         ->label('Deskripsi')
                         ->required(),
                     FileUpload::make('image_path')
-                        ->directory('public')
+                        ->directory('storage')
                         ->image()
                         ->required(),
                 ])
