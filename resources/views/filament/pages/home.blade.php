@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+
+
 @php
     $menus = [
         ['image' => 'images/p1.png', 'name' => 'Tuna Melt'],
@@ -15,7 +17,7 @@
         <div class="w-1/2">
             <h1 class="text-6xl font-bold text-gray-900">Fresh dari Oven, <br> <span class="text-yellow-500 mt-4">Lezat di Setiap Gigitan!</span></h1>
             <p class="mt-4 text-lg font-semibold text-gray-600">Pizza selalu hangat, dipanggang saat dipesan dengan topping melimpah, keju meleleh, dan rasa autentik!</p>
-            <a href="#" class="mt-6 inline-block bg-red-500 text-white px-6 py-2 rounded-lg text-lg font-bold">Pesan Sekarang</a>
+            <a href="{{ route('menu') }}" class="mt-6 inline-block bg-red-500 text-white px-6 py-2 rounded-lg text-lg font-bold">Pesan Sekarang</a>
         </div>
     </div>
 </section>
@@ -95,4 +97,92 @@
     </div>
 </section>
 
+<!-- Feedback Section -->
+<section class="bg-red-700 py-20 text-white">
+  <h3 class="font-bold text-3xl text-center pb-12">Apa Kata Mereka Tentang PizZaky</h3>
+
+  <div class="flex justify-center items-center gap-4">
+    
+    <!-- Tombol Prev -->
+    <button onclick="prevTestimonial()" class="bg-yellow-300 hover:bg-yellow-400 text-white p-3 rounded-full shadow-md transition-all duration-300 ml-2">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M15 19l-7-7 7-7" />
+      </svg>
+    </button>
+
+    <!-- Testimonial container -->
+    <div id="testimonial-container" class="flex items-center gap-6 overflow-hidden"></div>
+
+    <!-- Tombol Next -->
+    <button onclick="nextTestimonial()" class="bg-yellow-300 hover:bg-yellow-400 text-white p-3 rounded-full shadow-md transition-all duration-300 mr-2">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M9 5l7 7-7 7" />
+      </svg>
+    </button>
+  </div>
+</section>
+
 @endsection
+
+<script>
+const testimonials = [
+    { quote: "Bagus bagus", name: "Aidil", avatar: "/images/profile3.jpg" },
+    { quote: "Bagi freebies dong hehee", name: "Pani tia", avatar: "/images/profile2.jpg" },
+    { quote: "Websitenya lucu hehehe", name: "Shab", avatar: "/images/profile1.jpg" },
+    { quote: "Pizzanya enak banget bosss, sayang jauh di Sudiang :G", name: "NanaMei", avatar: "/images/profile4.jpg" },
+    { quote: "OMG", name: "Aidil", avatar: "/images/profile3.jpg" },
+    { quote: "Bagus bagus keren omagah", name: "Pani tia", avatar: "/images/profile2.jpg" },
+    { quote: "hehehe", name: "Shab", avatar: "/images/profile1.jpg" },
+    { quote: "we love we live woilah", name: "NanaMei", avatar: "/images/profile4.jpg" }
+];
+
+let current = 0;
+
+function renderTestimonials() {
+    const container = document.getElementById('testimonial-container');
+    container.innerHTML = '';
+
+    const visibleCount = 3;
+    const start = current;
+    const end = Math.min(current + visibleCount, testimonials.length);
+
+    for (let i = start; i < end; i++) {
+        const testimonial = testimonials[i];
+        const testimonialElement = document.createElement('div');
+
+        testimonialElement.classList.add(
+            'bg-white', 'p-6', 'rounded-xl', 'shadow-xl', 'w-80', 'mx-2',
+            'transition-all', 'duration-300', 'h-[250px]', 'flex', 'flex-col', 'justify-between'
+        );
+
+        testimonialElement.innerHTML = `
+            <p class="text-gray-700 text-center pt-8">"${testimonial.quote}"</p>
+            <div class="flex flex-col items-center justify-center">
+                <img src="${testimonial.avatar}" alt="${testimonial.name}" class="w-14 h-14 rounded-full mb-2">
+                <p class="font-medium text-gray-800">${testimonial.name}</p>
+            </div>
+        `;
+
+        container.appendChild(testimonialElement);
+    }
+}
+
+function nextTestimonial() {
+    const total = testimonials.length;
+    current = (current + 1) % (total - 2); // Adjust the modulo to fit the range
+    renderTestimonials();
+}
+
+function prevTestimonial() {
+    const total = testimonials.length;
+    current = (current - 1 + (total - 2)) % (total - 2); // Adjust the modulo to fit the range
+    renderTestimonials();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    renderTestimonials();
+    setInterval(() => {
+        nextTestimonial();
+    }, 3000);
+});
+</script>

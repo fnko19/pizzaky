@@ -8,17 +8,29 @@
 </head>
 <body class="bg-[url('https://source.unsplash.com/1600x900/?pizza')] bg-cover bg-center min-h-screen">
 
-  <!-- ✅ NAVBAR TRANSPARAN -->
   <nav class="fixed top-0 left-0 w-full z-50 bg-white/30 backdrop-blur-md shadow-md">
-    <div class="container mx-auto flex justify-between items-center px-4 py-3">
+    <div class="container mx-auto flex justify-between items-center py-3">
       <h1 class="text-xl font-bold">PizZaky</h1>
-      <ul class="flex space-x-8 items-center">
-        <li><a href="{{ route('home') }}"  class=" hover:text-red-400">Beranda</a></li>
-        <li><a href="{{ route('menu') }}"  class="hover:text-red-400">Menu</a></li>
-        <li><a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1170/1170576.png" alt="Cart" class="w-6"></a></li>
-        <li><a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1946/1946429.png" alt="Profile" class="w-8"></a></li>
+      <ul class="flex space-x-8 items-center font-semibold mx-auto">
+        <li>
+          <a href="{{ route('home') }}" class="hover:text-red-400 {{ request()->routeIs('home') ? 'text-red-500' : '' }}">Beranda</a>
+        </li>
+        <li>
+          <a href="{{ route('menu') }}" class="hover:text-red-400 {{ request()->routeIs('menu') ? 'text-red-500' : '' }}">Menu</a>
+        </li>
+        <li>
+          <a href="{{ route('pemesanan') }}" class="hover:text-red-400 {{ request()->routeIs('pemesanan') ? 'text-red-500' : '' }}">Keranjang</a>
+        </li>
+        <li>
+          <a href="{{ route('status_pesanan') }}" class="hover:text-red-400 {{ request()->routeIs('status_pesanan') ? 'text-red-500' : '' }}">Pesanan</a>
+        </li>
+        <li>
+          <a href="{{ route('feedback') }}" class="hover:text-red-400 {{ request()->routeIs('feedback') ? 'text-red-500' : '' }}">Feedback</a>
+        </li>
       </ul>
+      <a href="{{ route('login') }}" class="inline-block bg-red-500 text-white px-3 py-1 rounded-sm font-bold">Login</a>
     </div>
   </nav>
+
 </body>
 </html>

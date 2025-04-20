@@ -15,7 +15,7 @@ class detailPesanan extends Model
         'jumlah',
         'subtotal',
         'ekstraTopping',
-        'ekstraPinggiran',
+        'extra_pinggiran'
     ];
 
     
@@ -72,6 +72,7 @@ class detailPesanan extends Model
                         'L' => ['Sosis' => 15000, 'Keju' => 20000],
                     ];
                     $subtotal += $ekstra[$ukuran][$detail->ekstraPinggiran] * $jumlah ?? 0;
+                    
                 }
 
                 if ($detail->ekstraTopping === 'Keju') {
