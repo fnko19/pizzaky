@@ -42,6 +42,14 @@ class UserResource extends Resource
                         ->password()
                         ->required()
                         ->maxLength(255),
+                    TextInput::make('no_telp')
+                        ->label('Nomor Telepon'),
+                    Textarea::make('alamat')
+                        ->label('Alamat'),
+                    FileUpload::make('foto')
+                        ->label('Foto User')
+                        ->image()
+                        ->directory('storage'),
                 ])
             ]);
     }

@@ -28,7 +28,18 @@
           <a href="{{ route('feedback') }}" class="hover:text-red-400 {{ request()->routeIs('feedback') ? 'text-red-500' : '' }}">Feedback</a>
         </li>
       </ul>
-      <a href="{{ route('login') }}" class="inline-block bg-red-500 text-white px-3 py-1 rounded-sm font-bold">Login</a>
+
+      <!-- Cek jika user sudah login atau belum -->
+      @auth
+        <!-- Jika sudah login, tampilkan tombol Logout -->
+        <form action="{{ route('logout') }}" method="POST">
+          @csrf
+          <button type="submit" class="inline-block bg-red-500 text-white px-3 py-1 rounded-sm font-bold">Logout</button>
+        </form>
+      @else
+        <!-- Jika belum login, tampilkan tombol Login -->
+        <a href="{{ route('login') }}" class="inline-block bg-red-500 text-white px-3 py-1 rounded-sm font-bold">Login</a>
+      @endauth
     </div>
   </nav>
 

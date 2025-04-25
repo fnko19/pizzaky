@@ -25,7 +25,10 @@
                 <p class="text-sm">Pembayaran anda telah dikonfirmasi admin</p>
 
                 <p class="font-bold mt-2">Status Pesanan</p>
-                <p class="text-sm text-gray-700">Pesanan anda sedang disiapkan</p>
+                <p class="text-sm text-gray-700 pb-2">Pesanan anda sedang disiapkan</p>
+                <a href="https://wa.me/6285311389331" target="_blank" class="font-bold text-blue-700 underline">
+                Chat dengan Kurir
+                </a>
             </div>
 
             <!-- Kolom Kanan: Detail Order -->
@@ -93,9 +96,6 @@
             <button class="w-full bg-red-700 hover:bg-red-800 text-white font-semibold py-2 rounded">
                 Batalkan Pesanan
             </button>
-            <a href="https://wa.me/6285311389331" target="_blank" class="w-full bg-yellow-400 text-white font-semibold py-2 rounded text-center block">
-                Chat dengan Kurir
-            </a>
             <button class="w-full bg-gray-400 text-white font-semibold py-2 rounded">
                 Pesanan Diterima
             </button>

@@ -28,6 +28,12 @@
                         <textarea name="isi" class="w-full p-3 shadow-md border rounded" placeholder="Silakan masukkan feedback" required></textarea>
                     </div>
                     <button type="submit" class="w-full bg-red-700 text-white py-1 rounded">Kirim Feedback</button>
+                    @if(session('success'))
+    <div class="bg-green-100 text-green-800 px-4 py-2 rounded mb-4">
+        {{ session('success') }}
+    </div>
+@endif
+
                 </form>
             </div>
         </div>

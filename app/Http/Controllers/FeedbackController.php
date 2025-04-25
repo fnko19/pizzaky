@@ -7,20 +7,19 @@ use Illuminate\Http\Request;
 
 class FeedbackController extends Controller
 {
-    public function store(Request $request)
-    {
-        // Validasi data
-        $validatedData = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'kategori' => 'required|string',
-            'isi' => 'required|string',
-        ]);
 
-        // Menyimpan data jika validasi berhasil
-        Feedback::create($validatedData);
+public function store(Request $request)
+{
+    $request->validate([
+        'user_id' => 'required|string|max:255',
+        'kategori' => 'required|string',
+        'isi' => 'required|string',
+    ]);
 
-        // Redirect atau kirim pesan sukses
-        return redirect()->route('feedback.success')->with('message', 'Feedback berhasil dikirim!');
-    }
+    Feedback::create($request->all());
+
+    return redirect()->back()->with('success', 'Terima kasih atas feedback Anda!');
+}
+
 
 }

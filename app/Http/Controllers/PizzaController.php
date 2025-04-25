@@ -11,7 +11,7 @@ class PizzaController extends Controller
     public function show($id)
     {
         $pizza = Pizza::findOrFail($id);
-        $rasaPizzas = RasaPizza::all(); // ambil semua rasa
+        $rasaPizzas = RasaPizza::all();  
         return view('filament.pages.detail', compact('pizza', 'rasaPizzas'));
     }
 }

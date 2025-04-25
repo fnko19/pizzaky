@@ -15,7 +15,7 @@ class detailPesanan extends Model
         'jumlah',
         'subtotal',
         'ekstraTopping',
-        'extra_pinggiran'
+        'ekstraPinggiran',
     ];
 
     
@@ -72,7 +72,6 @@ class detailPesanan extends Model
                         'L' => ['Sosis' => 15000, 'Keju' => 20000],
                     ];
                     $subtotal += $ekstra[$ukuran][$detail->ekstraPinggiran] * $jumlah ?? 0;
-                    
                 }
 
                 if ($detail->ekstraTopping === 'Keju') {
@@ -109,12 +108,21 @@ class detailPesanan extends Model
     {
         $totalPizza = self::where('pesanan_id', $pesananId)->sum('subtotal');
         $totalMakananLain = \App\Models\detailMakananLain::where('pesanan_id', $pesananId)->sum('subtotal');
+        $totalPizzaPanjang = \App\Models\detailPizzaPanjang::where('pesanan_id', $pesananId)->sum('subtotal');
+
     
-        $total = $totalPizza + $totalMakananLain;
+        $total = $totalPizza + $totalMakananLain + $totalPizzaPanjang;
     
-        \App\Models\pesanan::where('id', $pesananId)->update([
-            'total_harga' => $total,
-        ]);
+        // \App\Models\pesanan::where('id', $pesananId)->update([
+        //     'total_harga' => $total,
+        // ]);
+
+        $pesanan = \App\Models\pesanan::find($pesananId);
+        if ($pesanan) {
+            $pesanan->total_harga = $total;
+            $pesanan->total_bayar = $total + ($pesanan->ongkir ?? 0);
+            $pesanan->save();
+        }
     }
 
 }

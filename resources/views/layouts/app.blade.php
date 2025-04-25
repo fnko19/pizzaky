@@ -18,8 +18,6 @@
     @include('components.navbar')
 </div>
 
-    
-
     <!-- Konten halaman -->
     <div class="container-fluid px-0" style="flex-grow: 1;">
         @yield('content')

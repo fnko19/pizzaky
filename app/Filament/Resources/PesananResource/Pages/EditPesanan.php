@@ -7,6 +7,7 @@ use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 use App\Models\detailPesanan;
 use App\Models\detailMakananLain;
+use App\Models\detailPizzaPanjang;
 
 class EditPesanan extends EditRecord
 {
@@ -30,10 +31,19 @@ class EditPesanan extends EditRecord
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
-        $totalPizza = detailPesanan::where('pesanan_id', $this->record->id)->sum('subtotal');
-        $totalMakananLain = detailMakananLain::where('pesanan_id', $this->record->id)->sum('subtotal');
+        // $totalPizza = detailPesanan::where('pesanan_id', $this->record->id)->sum('subtotal');
+        // $totalMakananLain = detailMakananLain::where('pesanan_id', $this->record->id)->sum('subtotal');
+        // $totalPizzaPanjang = detailPizzaPanjang::where('pesanan_id', $pesananId)->sum('subtotal');
+
     
-        $data['total_harga'] = $totalPizza + $totalMakananLain;
+        // $data['total_harga'] = $totalPizza + $totalMakananLain + $totalPizzaPanjang;
+        // $data['total_bayar'] = $total + ($data['ongkir'] ?? 0);
+        $total = \App\Models\detailPesanan::where('pesanan_id', $this->record->id)->sum('subtotal')
+        + \App\Models\detailMakananLain::where('pesanan_id', $this->record->id)->sum('subtotal')
+        + \App\Models\detailPizzaPanjang::where('pesanan_id', $this->record->id)->sum('subtotal');
+
+        $data['total_harga'] = $total;
+        $data['total_bayar'] = $total + ($data['ongkir'] ?? 0);
     
         return $data;
     }
