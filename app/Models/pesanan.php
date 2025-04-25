@@ -15,6 +15,8 @@ class pesanan extends Model
         'status_pesanan',
         'opsi_pengambilan',
         'whatsapp_driver',
+        'ongkir',
+        'total_bayar',
     ];
 
     public function user()
@@ -35,5 +37,10 @@ class pesanan extends Model
     public function detailMakananLains()
     {
         return $this->hasMany(detailMakananLain::class);
+    }
+
+    public function detailPizzaPanjangs()
+    {
+        return $this->hasMany(\App\Models\detailPizzaPanjang::class);
     }
 }

@@ -51,8 +51,11 @@ class MakananLainResource extends Resource
                     Textarea::make('deskripsi')
                         ->label('Deskripsi')
                         ->required(),
+                    Textarea::make('deskripsi_singkatt')
+                        ->label('Deskripsi Singkat')
+                        ->required(),
                     FileUpload::make('image_path')
-                        ->directory('public')
+                        ->directory('storage')
                         ->image()
                         ->required(),
                 ])

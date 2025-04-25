@@ -40,6 +40,14 @@ class PesananResource extends Resource
                         ->label('Total Pesanan')
                         ->nullable()
                         ->disabled(),
+                    TextInput::make('ongkir')
+                        ->label('Ongkir')
+                        ->nullable(),
+                    TextInput::make('total_bayar')
+                        ->label('Total Bayar')
+                        ->nullable()
+                        ->dehydrated(false)
+                        ->disabled(),
                     Select::make('opsi_pengambilan')
                         ->options([
                             'Ambil di Toko' => 'Ambil di Toko',
@@ -74,10 +82,18 @@ class PesananResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('id')
+                    ->label('ID Pesanan')
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('user.name')
                     ->label('Nama Customer'),
                 TextColumn::make('total_harga')
                     ->label('Total Pesanan'),
+                TextColumn::make('ongkir')
+                    ->label('Ongkir'),
+                TextColumn::make('total_bayar')
+                    ->label('Total Bayar'),
                     //->getStateUsing(fn ($record) => $record->skor_kematangan)
                 TextColumn::make('opsi_pengambilan')
                     ->label('Opsi Pengambilan'),
@@ -132,3 +148,4 @@ class PesananResource extends Resource
         ];
     }
 }
+

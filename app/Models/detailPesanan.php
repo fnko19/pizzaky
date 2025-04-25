@@ -108,12 +108,21 @@ class detailPesanan extends Model
     {
         $totalPizza = self::where('pesanan_id', $pesananId)->sum('subtotal');
         $totalMakananLain = \App\Models\detailMakananLain::where('pesanan_id', $pesananId)->sum('subtotal');
+        $totalPizzaPanjang = \App\Models\detailPizzaPanjang::where('pesanan_id', $pesananId)->sum('subtotal');
+
     
-        $total = $totalPizza + $totalMakananLain;
+        $total = $totalPizza + $totalMakananLain + $totalPizzaPanjang;
     
-        \App\Models\pesanan::where('id', $pesananId)->update([
-            'total_harga' => $total,
-        ]);
+        // \App\Models\pesanan::where('id', $pesananId)->update([
+        //     'total_harga' => $total,
+        // ]);
+
+        $pesanan = \App\Models\pesanan::find($pesananId);
+        if ($pesanan) {
+            $pesanan->total_harga = $total;
+            $pesanan->total_bayar = $total + ($pesanan->ongkir ?? 0);
+            $pesanan->save();
+        }
     }
 
 }

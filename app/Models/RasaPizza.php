@@ -19,4 +19,9 @@ class RasaPizza extends Model
         return $this->belongsToMany(detailPesanan::class, 'pizza_rasa_detail_pesanans');
     }
 
+    public function pizza()
+    {
+        return $this->belongsTo(Pizza::class, 'pizza_id'); // Kolom pizza_id yang menghubungkan
+    }
+
 }

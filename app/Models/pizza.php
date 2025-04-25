@@ -15,12 +15,14 @@ class pizza extends Model
         'harga',
         'stok',
         'deskripsi',
+        'deskripsi_singkat',
         'max_rasa',
         'ukuran',
     ];
 
-    public function detailPesanan()
+    public function rasaPizzas()
     {
-        return $this->belongsTo(detailPesanan::class);
+        return $this->belongsToMany(RasaPizza::class);
     }
+
 }

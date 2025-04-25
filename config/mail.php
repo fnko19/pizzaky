@@ -32,6 +32,23 @@ return [
     |            "postmark", "log", "array", "failover", "roundrobin"
     |
     */
+    'driver' => env('MAIL_MAILER', 'smtp'),
+    'host' => env('MAIL_HOST', 'live.smtp.mailtrap.io'),
+    'port' => env('MAIL_PORT', 587),
+    'from' => [
+        'address' => env('MAIL_FROM_ADDRESS', 'apismtp@mailtrap.io'),
+        'name' => env('MAIL_FROM_NAME', 'PizZaky'),
+    ],
+    'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+    'username' => env('smtp@mailtrap.io'),
+    'password' => env('144e5058f42f69b14dddbff829221626'),
+    'sendmail' => '/usr/sbin/sendmail -bs',
+    'markdown' => [
+        'theme' => 'default',
+        'paths' => [
+            resource_path('views/vendor/mail'),
+        ],
+    ],
 
     'mailers' => [
         'smtp' => [
@@ -40,8 +57,8 @@ return [
             'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
             'port' => env('MAIL_PORT', 587),
             'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-            'username' => env('MAIL_USERNAME'),
-            'password' => env('MAIL_PASSWORD'),
+            'username' => env('smtp@mailtrap.io'),
+            'password' => env('144e5058f42f69b14dddbff829221626'),
             'timeout' => null,
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
         ],

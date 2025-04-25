@@ -9,7 +9,7 @@ class makananLain extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nama_makanan', 'harga', 'stok', 'deskripsi', 'image_path'];
+    protected $fillable = ['nama_makanan', 'harga', 'stok', 'deskripsi', 'image_path', 'deskripsi_singkatt',];
 
     public function detailMakananLains()
     {

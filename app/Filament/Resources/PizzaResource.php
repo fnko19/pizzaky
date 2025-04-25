@@ -59,13 +59,17 @@ class PizzaResource extends Resource
                     Textarea::make('deskripsi')
                         ->label('Deskripsi')
                         ->required(),
+                    Textarea::make('deskripsi_singkat')
+                        ->label('Deskripsi_singkat')
+                        ->required(),
                     TextInput::make('max_rasa')
                         ->label('Batas Rasa')
                         ->numeric()
                         ->required(),
                     FileUpload::make('image_path')
-                        ->directory('public')
+                        ->directory('storage')
                         ->image()
+                        ->imagePreviewHeight('200')
                         ->required(),
                 ])
             ]);
@@ -84,6 +88,7 @@ class PizzaResource extends Resource
                 TextColumn::make('ukuran')->label('Tipe Ukuran')->sortable(),
                 TextColumn::make('stok')->label('Stok')->sortable(),
                 TextColumn::make('deskripsi')->label('Deskripsi')->limit(50),
+                TextColumn::make('deskripsi_singkat')->label('Deskripsi Singkat')->limit(50),
                 TextColumn::make('max_rasa')->label('Batas Rasa')->sortable(),
                 TextColumn::make('created_at')->label('Dibuat')->dateTime(),
                 
