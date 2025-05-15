@@ -6,7 +6,7 @@
     <div class="w-[800px] bg-yellow-100 flex pb-20 pt-32 justify-center items-center  items-start sticky top-0 h-screen">
         <img src="{{ Storage::url($pizza->image_path) }}" 
              alt="Pizza" 
-             class="w-[600px] h-[600px] rounded-2xl object-contain border-40 border-white">
+             class="w-[600px] h-[600px] object-cover border-40 border-white">
     </div>
 
     <!-- Detail Pizza dan Form -->

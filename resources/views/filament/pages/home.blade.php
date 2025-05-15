@@ -1,41 +1,51 @@
 @extends('layouts.app')
 
-
-
-@php
-    $menus = [
-        ['image' => 'images/p1.png', 'name' => 'Tuna Melt'],
-        ['image' => 'images/p2.jpg', 'name' => 'Pepperoni Feast'],
-        ['image' => 'images/p3.jpg', 'name' => 'Veggie Supreme'],
-        ['image' => 'images/p4.jpg', 'name' => 'Cheese Overload'],
-        ['image' => 'images/p5.jpg', 'name' => 'BBQ Chicken']
-    ];
-@endphp
 @section('content')
+
 <section class="w-full mt-16 bg-cover bg-center min-h-[88vh] flex items-center" style="background-image: url('{{ asset('images/home.png') }}');">
     <div class="container mx-auto flex items-end justify-end">
         <div class="w-1/2">
-            <h1 class="text-6xl font-bold text-gray-900">Fresh dari Oven, <br> <span class="text-yellow-500 mt-4">Lezat di Setiap Gigitan!</span></h1>
-            <p class="mt-4 text-lg font-semibold text-gray-600">Pizza selalu hangat, dipanggang saat dipesan dengan topping melimpah, keju meleleh, dan rasa autentik!</p>
-            <a href="{{ route('menu') }}" class="mt-6 inline-block bg-red-500 text-white px-6 py-2 rounded-lg text-lg font-bold">Pesan Sekarang</a>
+            <h1 class="pl-2 text-6xl font-bold text-gray-900">Fresh dari Oven, <br> <span class="text-yellow-500 mt-4">Lezat di Setiap Gigitan!</span></h1>
+            @auth
+            <div class="container mx-auto">
+                <p class="mt-4 text-lg font-semibold text-gray-600">Pizza selalu hangat, dipanggang saat dipesan dengan topping melimpah, keju meleleh, dan rasa autentik!</p>
+                <a href="{{ route('menu') }}" class="mt-6 inline-block bg-red-500 text-white px-4 py-2 rounded-lg text-lg font-bold">Pesan Sekarang</a>
+            </div>
+            @else
+            <div class="container mx-auto">
+                <p class="mt-4 text-lg font-semibold text-gray-600">Masuk sekarang untuk nikmati PizZaky!!</p>
+                <a href="{{ route('login') }}" class="mt-6 inline-block bg-red-500 text-white px-4 py-2 rounded-lg text-lg font-bold">Masuk Sekarang</a>
+            </div>
+            @endauth
+      </div>
+
         </div>
     </div>
 </section>
 
 <!-- Menu Favorit -->
 <section class="bg-red-700 py-16 min-h-[60vh]">
-    <div class="container mx-auto items-center justify-center">
-        <h2 class="text-3xl text-yellow-300 font-bold">Menu Favorit</h2>
-        <p class="text-white text-lg font-semibold mt-3">Pilihan paling banyak dipesan dan dijamin enak!</p>
+    <div class="container mx-auto px-4">
+        @if($rasas->count())
+            @foreach ($rasas as $bulan => $menuList)
+                <div class="mb-12">
+                    <h2 class="text-3xl text-yellow-300 font-bold">Rasa Favorit Bulan {{ $bulan }}</h2>
+                    <p class="text-white text-lg font-semibold mt-2">Pilihan paling banyak dipesan dan dijamin enak!</p>
 
-        <div class="grid grid-cols-5 gap-6 mt-6">
-            @foreach ($menus as $menu)
-                <div class="bg-white rounded-lg p-4 shadow-lg">
-                    <img src="{{ asset($menu['image']) }}" alt="{{ $menu['name'] }}" class="rounded-lg w-80">
-                    <h3 class="text-xl text-center font-bold pt-4 text-red-700">{{ $menu['name'] }}</h3>
+                    <div class="grid grid-cols-5 gap-6 mt-12">
+                        @foreach ($menuList as $rasa)         
+                            <div class="bg-white rounded-lg p-4 shadow-lg">
+                                <img src="{{ Storage::url($rasa->image_path) }}" alt="{{ $rasa->nama_rasa }}" class="rounded-lg w-full h-48 object-cover">
+                                <h3 class="text-xl text-center font-bold pt-4 text-red-700">{{ $rasa->nama_rasa }}</h3>
+                                <p class="text-sm text-center pt-2 text-gray-700">{{ $rasa->desc_singkat }}</p>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
             @endforeach
-        </div>
+        @else
+            <p class="text-white text-center">Belum ada data rasa favorit yang tersedia.</p>
+        @endif
     </div>
 </section>
 
@@ -97,15 +107,13 @@
     </div>
 </section>
 
-<!-- Feedback Section -->
 <section class="bg-red-700 py-20 text-white">
   <h3 class="font-bold text-3xl text-center pb-12">Apa Kata Mereka Tentang PizZaky</h3>
 
   <div class="flex justify-center items-center gap-4">
-    
     <!-- Tombol Prev -->
     <button onclick="prevTestimonial()" class="bg-yellow-300 hover:bg-yellow-400 text-white p-3 rounded-full shadow-md transition-all duration-300 ml-2">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M15 19l-7-7 7-7" />
       </svg>
     </button>
@@ -115,7 +123,7 @@
 
     <!-- Tombol Next -->
     <button onclick="nextTestimonial()" class="bg-yellow-300 hover:bg-yellow-400 text-white p-3 rounded-full shadow-md transition-all duration-300 mr-2">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M9 5l7 7-7 7" />
       </svg>
     </button>
@@ -124,65 +132,62 @@
 
 @endsection
 
+<script id="testimonials-data" type="application/json">
+  {!! $feedbacks
+      ->map(function($f){
+        return [
+          'quote'  => $f->isi,
+          'name'   => $f->user->name,
+          'avatar' => $f->user->foto
+              ? asset("storage/{$f->user->foto}")
+              : asset("images/default.png"),
+        ];
+      })
+      ->toJson() !!}
+</script>
+
 <script>
-const testimonials = [
-    { quote: "Bagus bagus", name: "Aidil", avatar: "/images/profile3.jpg" },
-    { quote: "Bagi freebies dong hehee", name: "Pani tia", avatar: "/images/profile2.jpg" },
-    { quote: "Websitenya lucu hehehe", name: "Shab", avatar: "/images/profile1.jpg" },
-    { quote: "Pizzanya enak banget bosss, sayang jauh di Sudiang :G", name: "NanaMei", avatar: "/images/profile4.jpg" },
-    { quote: "OMG", name: "Aidil", avatar: "/images/profile3.jpg" },
-    { quote: "Bagus bagus keren omagah", name: "Pani tia", avatar: "/images/profile2.jpg" },
-    { quote: "hehehe", name: "Shab", avatar: "/images/profile1.jpg" },
-    { quote: "we love we live woilah", name: "NanaMei", avatar: "/images/profile4.jpg" }
-];
+  const testimonials = JSON.parse(
+    document.getElementById('testimonials-data').textContent
+  );
+  const quoteImageUrl = "{{ asset('images/quote.jpg') }}";
 
-let current = 0;
-
-function renderTestimonials() {
-    const container = document.getElementById('testimonial-container');
-    container.innerHTML = '';
-
+  let current = 0;
+  function renderTestimonials() {
+    const container = document.getElementById("testimonial-container");
+    container.innerHTML = "";
     const visibleCount = 3;
     const start = current;
-    const end = Math.min(current + visibleCount, testimonials.length);
+    const end   = Math.min(current + visibleCount, testimonials.length);
 
-    for (let i = start; i < end; i++) {
-        const testimonial = testimonials[i];
-        const testimonialElement = document.createElement('div');
+    for (let i = current; i < end; i++) {
+        const { quote, name, avatar } = testimonials[i];
+        const el = document.createElement("div");
+        el.className = "bg-white rounded-xl shadow-lg p-4 w-80 mx-2 flex flex-col justify-between h-[220px]";
 
-        testimonialElement.classList.add(
-            'bg-white', 'p-6', 'rounded-xl', 'shadow-xl', 'w-80', 'mx-2',
-            'transition-all', 'duration-300', 'h-[250px]', 'flex', 'flex-col', 'justify-between'
-        );
-
-        testimonialElement.innerHTML = `
-            <p class="text-gray-700 text-center pt-8">"${testimonial.quote}"</p>
-            <div class="flex flex-col items-center justify-center">
-                <img src="${testimonial.avatar}" alt="${testimonial.name}" class="w-14 h-14 rounded-full mb-2">
-                <p class="font-medium text-gray-800">${testimonial.name}</p>
-            </div>
+        el.innerHTML = `
+          <img src="/images/quote.png" alt="Quote icon" class="w-8 h-8 justify-start" />
+          <p class="text-gray-800 text-center text-lg italic pb-4">${quote}</p>
+          <div class="flex rounded-xl justify-center items-center space-x-4">
+            <img src="${avatar}" alt="${name}" class="w-10 h-10 rounded-full border-2 border-yellow-400 shadow-md" />
+            <p class="text-sm text-gray-900 items-center">${name}</p>
+          </div>
         `;
-
-        container.appendChild(testimonialElement);
+      container.appendChild(el);
     }
-}
+  }
 
-function nextTestimonial() {
-    const total = testimonials.length;
-    current = (current + 1) % (total - 2); // Adjust the modulo to fit the range
+  function nextTestimonial() {
+    current = (current + 1) % testimonials.length;
     renderTestimonials();
-}
+  }
+  function prevTestimonial() {
+    current = (current - 1 + testimonials.length) % testimonials.length;
+    renderTestimonials();
+  }
 
-function prevTestimonial() {
-    const total = testimonials.length;
-    current = (current - 1 + (total - 2)) % (total - 2); // Adjust the modulo to fit the range
+  document.addEventListener("DOMContentLoaded", () => {
     renderTestimonials();
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    renderTestimonials();
-    setInterval(() => {
-        nextTestimonial();
-    }, 3000);
-});
+    setInterval(nextTestimonial, 1500);
+  });
 </script>

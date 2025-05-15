@@ -11,24 +11,22 @@ class DaftarController extends Controller
 {
     public function register(Request $request)
     {
-        // Validasi input
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
         ]);
 
-        // Membuat pengguna baru
         $user = User::create([
             'name' => $validated['name'],
-            'email' => $validated['email'],
+            'email' => 'required|email|unique:users,email',
             'password' => bcrypt($validated['password']),
         ]);
 
-        // Melakukan login setelah registrasi
         auth()->login($user);
 
-        return redirect()->route('home'); // Arahkan ke halaman utama setelah registrasi
+        return redirect()->route('home');  
     }
 
 }
