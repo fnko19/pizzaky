@@ -9,7 +9,7 @@ class DetailController extends Controller
     public function show($id)
     {
         
-        $details = Pizza::with('rasa')->findOrFail($id); // Eager load 'rasa' relationship
+        $details = Pizza::with('rasa')->findOrFail($id);  
         
         return view('filament.pages.detail', compact('details'));
     }

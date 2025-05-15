@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\DB; // Pastikan ini ada
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +20,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Menambahkan statement untuk mengaktifkan foreign keys di SQLite
+        if (config('database.default') == 'sqlite') {
+            DB::statement('PRAGMA foreign_keys = ON');
+        }
     }
 }
+

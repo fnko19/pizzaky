@@ -32,15 +32,12 @@
                 </div>
 
                 <!-- Konfirmasi Password -->
-                <div class="mb-4">
+                <div class="mb-8">
                     <label class="block font-semibold">Konfirmasi Password</label>
                     <input type="password" name="password_confirmation" class="w-full px-3 py-1.5 border rounded" placeholder="Silakan masukkan password lagi">
                 </div>
                 <button class="w-full bg-black text-white px-3 py-2 rounded">Daftar</button>
             </form>
-            <button class="w-full mt-3 flex items-center justify-center border px-3 py-2 rounded">
-                    <img src="https://www.svgrepo.com/show/355037/google.svg" class="w-5 h-5 mr-2"> Daftar dengan Google
-                </button>
             <p class="mt-4 text-sm flex items-center justify-center">Telah memiliki akun?  <a href="{{ route('login') }}" class="text-blue-600 pl-1"> Masuk sekarang</a></p>
         </div>
         <div class="w-1/2">

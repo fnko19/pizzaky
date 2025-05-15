@@ -26,7 +26,7 @@
 
                 <p class="font-bold mt-2">Status Pesanan</p>
                 <p class="text-sm text-gray-700 pb-2">Pesanan anda sedang disiapkan</p>
-                <a href="https://wa.me/6285311389331" target="_blank" class="font-bold text-blue-700 underline">
+                <a href="https://wa.me/6285311389331" target="_blank" class="font-bold text-red-700 underline">
                 Chat dengan Kurir
                 </a>
             </div>
@@ -78,7 +78,7 @@
                 </div>
 
                 <!-- Total dan Ongkir -->
-                <hr class="my-4">
+                <hr class="my-2">
 
                 <div class="flex font-bold justify-between text-sm">
                     <span>Ongkir</span>

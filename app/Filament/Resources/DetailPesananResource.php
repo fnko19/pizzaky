@@ -68,18 +68,33 @@ class DetailPesananResource extends Resource
                             };
                         }),
 
+                    // Select::make('ekstraTopping')
+                    //     ->label('Ekstra Topping')
+                    //     ->options([
+                    //         'Keju' => 'Keju',
+                    //     ]),
                     Select::make('ekstraTopping')
                         ->label('Ekstra Topping')
                         ->options([
                             'Keju' => 'Keju',
-                        ]),
+                        ])
+                        ->reactive()
+                        ->disabled(function (callable $get) {
+                            $pizza = \App\Models\pizza::find($get('pizza_id'));
+                            return $pizza?->ukuran === 'S';
+                        }),
 
                     Select::make('ekstraPinggiran')
                         ->label('Ekstra Pinggiran')
                         ->options([
-                            'Sosis' => 'Sosis',
-                            'Keju' => 'Keju',
-                        ]),
+                        'Sosis' => 'Sosis',
+                        'Keju' => 'Keju',
+                        ])
+                        ->reactive()
+                        ->disabled(function (callable $get) {
+                            $pizza = \App\Models\pizza::find($get('pizza_id'));
+                            return $pizza?->ukuran === 'S';
+                    }),
 
                     TextInput::make('jumlah')
                         ->numeric()

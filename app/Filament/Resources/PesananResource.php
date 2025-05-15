@@ -40,9 +40,9 @@ class PesananResource extends Resource
                         ->label('Total Pesanan')
                         ->nullable()
                         ->disabled(),
-                    TextInput::make('ongkir')
-                        ->label('Ongkir')
-                        ->nullable(),
+                    // TextInput::make('ongkir')
+                    //     ->label('Ongkir')
+                    //     ->nullable(),
                     TextInput::make('total_bayar')
                         ->label('Total Bayar')
                         ->nullable()
@@ -54,6 +54,18 @@ class PesananResource extends Resource
                             'Antar ke Rumah' => 'Antar ke Rumah',
                         ])
                         ->reactive(),
+                    TextInput::make('ongkir')
+                        ->label('Ongkir')
+                        ->nullable()
+                        ->reactive()
+                        ->afterStateUpdated(function ($state, callable $set, callable $get) {
+                            if ($get('opsi_pengambilan') === 'Ambil di Toko') {
+                                $set('ongkir', 0);
+                            }
+                        })
+                        ->disabled(function (callable $get) {
+                            return $get('opsi_pengambilan') === 'Ambil di Toko';
+                        }),
                     Select::make('status_pesanan')
                         ->label('Status Pesanan')
                         ->options(fn (callable $get) => $get('opsi_pengambilan') === 'Ambil di Toko'
