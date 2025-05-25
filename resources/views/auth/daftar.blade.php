@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daftar</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="h-screen flex items-center justify-center bg-gray-200">
     <div class="flex w-full max-w-4xl bg-white shadow-lg rounded-lg overflow-hidden">
         <div class="w-1/2 px-14 py-16">
             <h2 class="text-2xl flex items-center justify-center font-bold mb-2">Selamat Datang</h2>
             <p class="text-gray-600 pb-5 flex items-center justify-center">Silakan masukkan data anda</p>
-            <form action="{{ route('daftar') }}" method="POST">
+            <form action="{{ route('daftar.submit') }}" method="POST">
                 @csrf
                 <!-- Nama -->
                 <div class="mb-4">
@@ -41,33 +42,42 @@
             <p class="mt-4 text-sm flex items-center justify-center">Telah memiliki akun?  <a href="{{ route('login') }}" class="text-blue-600 pl-1"> Masuk sekarang</a></p>
         </div>
         <div class="w-1/2">
-            <img src="{{ asset('images/daftar.png') }}" alt="Pizza" class="h-full w-full object-cover">
+            <img src="{{ asset('images/pizza.jpg') }}" alt="Pizza" class="h-full w-full object-cover">
         </div>
         <!-- Modal Error -->
-        <div id="errorModal" <div id="errorModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
-            <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full text-center">
-                <h2 class="text-lg font-bold mb-4 text-red-600">Terjadi Kesalahan</h2>
-                
-                @if ($errors->has('password'))
-                    <p class="text-black">Konfirmasi password tidak sesuai atau password kurang dari 6 karakter.</p>
-                @elseif ($errors->has('email'))
-                    <p class="text-black">Email telah digunakan. Silakan gunakan email lain.</p>
-                @elseif ($errors->has('name'))
-                    <p class="text-black">Nama wajib diisi.</p>
-                @endif
-
-                <div class="mt-4">
-                    <button onclick="document.getElementById('errorModal').classList.add('hidden')" class="bg-black text-white px-4 py-2 rounded">Tutup</button>
-                </div>
-            </div>
-        </div>
-        @if ($errors->any())
-        <script>
-            window.onload = () => {
-                document.getElementById('errorModal').classList.remove('hidden');
-            };
-        </script>
+        @if ($errors->has('password'))
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Terjadi Kesalahan',
+                        text: 'Konfirmasi password tidak sesuai atau password kurang dari 6 karakter.',
+                        confirmButtonColor: '#d33'
+                    });
+                });
+            </script>
+        @elseif ($errors->has('email'))
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Terjadi Kesalahan',
+                        text: 'Email telah digunakan. Silakan gunakan email lain.',
+                        confirmButtonColor: '#d33'
+                    });
+                });
+            </script>
+        @elseif ($errors->has('name'))
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Terjadi Kesalahan',
+                        text: 'Nama wajib diisi.',
+                        confirmButtonColor: '#d33'
+                    });
+                });
+            </script>
         @endif
-    </div>
 </body>
 </html>

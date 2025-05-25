@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <script>
@@ -23,9 +24,18 @@
 
             {{-- Tampilkan pesan error jika login gagal --}}
             @if ($errors->any())
-                <div class="mb-4 text-red-500 text-sm text-center">
-                    {{ $errors->first() }}
-                </div>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        let errorMessages = `{!! implode('<br>', $errors->all()) !!}`;
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Terjadi Kesalahan',
+                            html: errorMessages,
+                            confirmButtonColor: '#d33',
+                        });
+                    });
+                </script>
             @endif
 
             <form action="{{ route('login') }}" method="POST">

@@ -52,7 +52,7 @@ class PizzaPanjangResource extends Resource
                         ->label('Deskripsi')
                         ->required(),
                     Textarea::make('desc_singkat')
-                        ->label('Deskripsi')
+                        ->label('Deskripsi Singkat')
                         ->required(),
                     FileUpload::make('image_path')
                         ->directory('storage')

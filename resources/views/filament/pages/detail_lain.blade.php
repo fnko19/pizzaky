@@ -16,6 +16,10 @@
         <p class="text-gray-400 text-lg mb-3">Rp {{ number_format($makananlain->harga, 0, ',', '.') }}</p>
         <p class="mb-4 text-lg">{{ $makananlain->deskripsi }}</p>
 
+            <form action="{{ route('lain.store') }}" method="POST">
+            @csrf
+            <input type="hidden" name="pesanan_id" value="{{ $pesananAktif->id }}">
+            <input type="hidden" name="makanan_lain_id" value="{{ $makananlain->id }}">
             <!-- Jumlah -->
             <div>
                 <label for="jumlah" class="block text-lg font-bold mb-2">Jumlah</label>
@@ -23,9 +27,9 @@
             </div>
 
             <div class="pt-4">
-                <a href="{{ route('pemesanan') }}" class="bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 px-6 rounded shadow-md self-start">
+                <button type="submit" class="bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 px-6 rounded shadow-md self-start">
                     Masukkan Keranjang
-                </a>
+                </button>
             </div>
 
         </form>

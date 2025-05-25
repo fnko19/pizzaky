@@ -49,18 +49,20 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function setPasswordAttribute($value)
-    {
-        $this->attributes['password'] = Hash::make($value);
-    }
+    // public function setPasswordAttribute($value)
+    // {
+    //     $this->attributes['password'] = Hash::make($value);
+    // }
 
     public function pesanan()
     {
-        return $this->belongsTo(pesanan::class);
+        return $this->hasMany(pesanan::class);
     }
 
     public function feedbacks()
     {
         return $this->hasMany(Feedback::class);
     }
+
+    
 }

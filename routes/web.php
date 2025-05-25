@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PizzaController;
+use App\Models\PasswordResetToken;
 use App\Http\Controllers\PizzaPanjangController;
 use App\Http\Controllers\MakananLainController;
 use App\Http\Controllers\ProfileController;
@@ -13,13 +14,17 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\FeedbackHomeController;
 use App\Http\Controllers\RasaFavoritController;
+use App\Http\Controllers\KeranjangController;
+use App\Http\Controllers\DetailPesananController;
+use App\Http\Controllers\DetailPanjangController;
+use App\Http\Controllers\DetailLainController;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
-use App\Models\PasswordResetToken;
+
 
 // --- Auth Routes ---
 // Login
@@ -32,52 +37,53 @@ Route::middleware('guest')->group(function () {
 Route::get('forgot-password', [LoginController::class, 'forgot_password'])->name('forgot-password');
 Route::post('forgot-password-act', [LoginController::class, 'forgot_password_act'])->name('forgot-password-act');
 
-Route::get('/reset-password/{token}', [LoginController::class, 'showResetForm'])->name('password.reset');
-
 // Menangani POST dari form reset password
 Route::get('/validasi-forgot-password/{token}', [LoginController::class, 'validasi_forgot_password'])->name('validasi-forgot-password');
-Route::get('/reset-password/{token}', function ($token){
-    $reset = \App\Models\PasswordResetToken::where('token', $token)->first();
+// Route::get('/reset-password/{token}', function ($token, Request $request) {
+//     $reset = PasswordResetToken::where('token', $token)
+//                 ->where('email', $request->email)
+//                 ->first();
 
-    if (!$reset) {
-        return redirect()->route('login')->with('failed', 'Token tidak valid');
-    }
+//     if (!$reset) {
+//         return redirect()->route('login')->with('failed', 'Token tidak valid');
+//     }
 
-    return view('auth.validasi-token', [
-        'token' => $token,
-        'email' => $reset->email
-    ]);
-})->middleware('guest')->name('password.reset');
+//     return view('auth.validasi-token', [
+//         'token' => $token,
+//         'email' => $request->email
+//     ]);
+// })->middleware('guest')->name('password.reset');
+Route::get('reset-password/{token}', [LoginController::class, 'showResetForm'])->name('password.reset');
+Route::post('/reset-password', [LoginController::class, 'updatePassword'])->middleware('guest')->name('password.update');
 
-Route::post('/reset-password', function (Request $request) {
-    $request->validate([
-        'token' => 'required',
-        'email' => 'required|email',
-        'password' => 'required|min:8|confirmed',
-    ]);
 
-    $reset = PasswordResetToken::where('email', $request->email)
-        ->where('token', $request->token)
-        ->first();
+// Route::post('/reset-password', function (Request $request) {
+//     $request->validate([
+//         'token' => 'required',
+//         'email' => 'required|email',
+//         'password' => 'required|min:8|confirmed',
+//     ]);
 
-    if (!$reset) {
-        return back()->withErrors(['token' => 'Token tidak valid atau sudah kadaluarsa.']);
-    }
+//     $reset = PasswordResetToken::where('email', $request->email)
+//                 ->where('token', $request->token)
+//                 ->first();
 
-    $user = User::where('email', $request->email)->first();
+//     if (!$reset) {
+//         return back()->withErrors(['token' => 'Token tidak valid atau sudah kadaluarsa.']);
+//     }
 
-    if (!$user) {
-        return back()->withErrors(['email' => 'Email tidak terdaftar.']);
-    }
+//     $user = User::where('email', $request->email)->first();
+//     if (!$user) {
+//         return back()->withErrors(['email' => 'Email tidak terdaftar.']);
+//     }
 
-    $user->password = Hash::make($request->password);
-    $user->save();
+//     $user->password = Hash::make($request->password);
+//     $user->save();
 
-    // Hapus token setelah digunakan
-    PasswordResetToken::where('email', $request->email)->delete();
+//     PasswordResetToken::where('email', $request->email)->delete();
 
-    return redirect()->route('login')->with('status', 'Password berhasil direset!');
-})->middleware('guest')->name('password.update');
+//     return redirect()->route('login')->with('status', 'Password berhasil direset!');
+// })->name('password.update');
 
 // Register
 Route::get('/daftar', function () {
@@ -98,7 +104,7 @@ Route::post('/daftar', function (Request $request) {
     ]);
 
     return redirect()->route('login')->with('success', 'Registrasi berhasil, silakan login.');
-});
+})->name('daftar.submit');
 
 // Logout
 Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
@@ -115,9 +121,9 @@ Route::get('/menu', [MenuController::class, 'index'])->name('menu');
 Route::get('/pizza/{id}', [PizzaController::class, 'show'])->name('pizza.show');
 Route::get('/pizza/{id}', [PizzaController::class, 'show'])->name('detail');
 
-Route::get('/pizzapanjang/{id}', [PizzaPanjangController::class, 'show'])->name('pizzapanjang.detail');
+Route::get('/pizzapanjang/{id}', [DetailPanjangController::class, 'show'])->name('pizzapanjang.detail');
 
-Route::get('/makananlain/{id}', [MakananLainController::class, 'show'])->name('makananlain.detail');
+Route::get('/makananlain/{id}', [DetailLainController::class, 'show'])->name('makananlain.detail');
 
 Route::post('/pesanan', [PesananController::class, 'store'])->name('pesanan.store');
 Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
@@ -127,7 +133,16 @@ Route::get('/export-laporan', function(Request $request) {
     return Excel::download(new LaporanPenjualanExport($bulan), 'laporan_penjualan_'.$bulan.'.xlsx');
 })->name('export-laporan');
 
+Route::post('/pemesanan/simpan', [KeranjangController::class, 'simpan'])->name('pemesanan.simpan');
+Route::get('/pemesanan', [KeranjangController::class, 'showAktif'])->name('pemesanan.show');
 
+Route::post('/pesanan/store', [DetailPesananController::class, 'store'])->name('pesanan.store');
+
+Route::post('/detailpanjang', [DetailPanjangController::class, 'store'])->name('panjang.store');
+Route::get('/detailpanjang', [DetailPanjangController::class, 'someMethod'])->name('panjang.someMethod');
+
+Route::post('/makananlain', [DetailLainController::class, 'store'])->name('lain.store');
+Route::get('/makananlain', [DetailLainController::class, 'someMethod'])->name('lain.someMethod');
 // --- Protected Routes (butuh login) ---
 Route::middleware('auth')->group(function () {
     
@@ -135,9 +150,6 @@ Route::middleware('auth')->group(function () {
         return view('filament.pages.feedback');
     })->name('feedback');
 
-    Route::get('/pemesanan', function () {
-        return view('filament.pages.pemesanan');
-    })->name('pemesanan');
 
     Route::get('/status_pesanan', function () {
         return view('filament.pages.status_pesanan');
