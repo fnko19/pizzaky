@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Pizza;
+use App\Models\User;
 use App\Models\RasaPizza;
 
 class PizzaController extends Controller
@@ -12,6 +13,8 @@ class PizzaController extends Controller
     {
         $pizza = Pizza::findOrFail($id);
         $rasaPizzas = RasaPizza::all();  
-        return view('filament.pages.detail', compact('pizza', 'rasaPizzas'));
+        $user = auth()->user();
+        $pesananAktif = $user->pesanan()->where('status_pesanan', 'Sedang di Proses')->first();
+        return view('filament.pages.detail', compact('pizza', 'rasaPizzas', 'pesananAktif'));
     }
 }

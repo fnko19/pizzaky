@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Lupa Password</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- Pastikan menggunakan SweetAlert -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="h-screen flex items-center justify-center bg-gray-200">
     <div class="flex w-full max-w-4xl bg-white shadow-lg rounded-lg overflow-hidden">
-        <div class="w-1/2 px-14 py-12">
+        <div class="w-1/2 px-14 py-24">
             <h2 class="text-xl pt-20 flex items-center justify-center font-bold mb-4">Lupa Password</h2>
 
         <form action="{{ route('forgot-password-act') }}" method="post">
@@ -30,7 +30,7 @@
                     });
                 </script>
             @enderror
-            <div class="pt-1">
+            <div class="pt-2">
                 <button type="submit" class="w-full bg-black text-white p-3 rounded font-semibold">
                     Kirim Link Reset Password
                 </button>
@@ -38,7 +38,7 @@
         </form>
     </div>
     <div class="w-1/2">
-            <img src="{{ asset('images/lupa.jpg') }}" alt="Login Image" class="h-full w-full object-cover">
+            <img src="{{ asset('images/email.jpg') }}" alt="Login Image" class="h-full w-full object-cover">
         </div>
     @if ($message = Session::get('success'))
         <script>

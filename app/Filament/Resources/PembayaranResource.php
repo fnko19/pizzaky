@@ -60,8 +60,7 @@ class PembayaranResource extends Resource
                         ->required(),
                     FileUpload::make('image_path')
                         ->directory('public')
-                        ->image()
-                        ->required(),
+                        ->image(),
                 ])
             ]);
     }

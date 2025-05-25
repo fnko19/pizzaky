@@ -93,7 +93,7 @@ class DetailPesananResource extends Resource
                         ->reactive()
                         ->disabled(function (callable $get) {
                             $pizza = \App\Models\pizza::find($get('pizza_id'));
-                            return $pizza?->ukuran === 'S';
+                            return in_array($pizza?->ukuran, ['S', 'Limo']);
                     }),
 
                     TextInput::make('jumlah')

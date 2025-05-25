@@ -1,3 +1,19 @@
+@php
+    if ($pizza->nama_pizza == 'Pizza Classic Ukuran M') {
+        $max_rasa = 2;
+    } elseif ($pizza->nama_pizza == 'Pizza Classic Ukuran S') {
+        $max_rasa = 1;
+    }elseif ($pizza->nama_pizza == 'Pizza Classic Ukuran L') {
+        $max_rasa = 2;
+    }elseif ($pizza->nama_pizza == 'Pizza Setengah Meter') {
+        $max_rasa = 4;
+    } elseif ($pizza->nama_pizza == 'Pizza 1 Meter') {
+        $max_rasa = 8;
+    } else {
+        $max_rasa = 1;
+    }
+@endphp
+
 @extends('layouts.app')
 
 @section('content')
@@ -19,6 +35,7 @@
         <!-- FORM -->
         <form action="{{ route('pesanan.store') }}" method="POST" class="flex flex-col gap-4">
             @csrf
+            <input type="hidden" name="pesanan_id" value="{{ $pesananAktif->id }}">
             <input type="hidden" name="pizza_id" value="{{ $pizza->id }}">
 
             <!-- Scrollable Area -->
@@ -26,13 +43,13 @@
                 <!-- Pilih Rasa -->
                 <details class="text-lg mb-2">
                     <summary class="font-bold cursor-pointer flex justify-between items-center">
-                        Pilih Rasa
+                        Pilih Rasa (Maksimal {{ $max_rasa }})
                         <img src="{{ asset('images/expand.png') }}" alt="Arrow" class="w-4 h-4">
                     </summary>
-                    <div class="mt-3 grid grid-cols-1 gap-2 text-sm text-yellow-500 overflow-y-auto">
+                    <div id="rasa-container" class="mt-3 grid grid-cols-1 gap-2 text-sm text-yellow-500 overflow-y-auto">
                         @foreach($rasaPizzas as $rasa)
                             <label class="flex items-center gap-2">
-                                <input type="checkbox" name="rasa[]" value="{{ $rasa->id }}">
+                                <input type="checkbox" name="rasa[]" value="{{ $rasa->id }}" class="rasa-checkbox">
                                 <div>
                                     <strong class="text-lg">{{ $rasa->nama_rasa }}</strong><br>
                                     <span class="text-gray-400">{{ $rasa->deskripsi }}</span>
@@ -81,11 +98,41 @@
                 <input type="number" name="jumlah" id="jumlah" min="1" value="1" class="w-20 p-2 border border-gray-300 rounded">
             </div>
 
-            <a href="{{ route('pemesanan') }}" class="bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 px-6 rounded shadow self-start">
+            <button type="submit" class="bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 px-6 rounded shadow self-start">
                 Masukkan Keranjang
-            </a>
+            </button>
 
         </form>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const maxRasa = {{ $max_rasa }};
+    const rasaCheckboxes = document.querySelectorAll('.rasa-checkbox');
+
+    function updateLimit() {
+        const checkedCount = Array.from(rasaCheckboxes).filter(cb => cb.checked).length;
+
+        if (checkedCount >= maxRasa) {
+            rasaCheckboxes.forEach(cb => {
+                if (!cb.checked) {
+                    cb.disabled = true;
+                }
+            });
+        } else {
+            rasaCheckboxes.forEach(cb => cb.disabled = false);
+        }
+    }
+
+    rasaCheckboxes.forEach(cb => {
+        cb.addEventListener('change', () => {
+            updateLimit();
+        });
+    });
+
+    updateLimit();
+});
+</script>
+
 @endsection

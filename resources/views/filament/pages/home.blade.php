@@ -50,7 +50,7 @@
 </section>
 
 <!-- Alamat Kami -->
-<section class="py-16" style="background-image: url('{{ asset('images/alamat.png') }}'); background-size: 100% 100%;">
+<section class="py-16" style="background-image: url('{{ asset('images/alamat.png') }}'); background-repeat: no-repeat; background-position: center;">
     <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
         <div class="flex flex-col space-y-4">
             <h2 class="text-3xl font-bold text-red-700">Alamat Kami</h2>
@@ -188,6 +188,6 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     renderTestimonials();
-    setInterval(nextTestimonial, 1500);
+    setInterval(nextTestimonial, 2500);
   });
 </script>

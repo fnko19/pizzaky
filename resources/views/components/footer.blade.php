@@ -17,7 +17,7 @@
                 <ul class="text-sm space-y-2">
                     <li><a href="{{ route('home') }}" class="hover:underline">Beranda</a></li>
                     <li><a href="{{ route('menu') }}" class="hover:underline">Menu</a></li>
-                    <li><a href="{{ route('pemesanan') }}" class="hover:underline">Keranjang</a></li>
+                    <li><a href="{{ route('pemesanan.show') }}" class="hover:underline">Keranjang</a></li>
                     <li><a href="{{ route('status_pesanan') }}" class="hover:underline">Pesanan</a></li>
                     <li><a href="{{ route('feedback') }}" class="hover:underline">Feedback</a></li>
                 </ul>
