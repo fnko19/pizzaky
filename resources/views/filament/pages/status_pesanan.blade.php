@@ -47,10 +47,13 @@
                             <p class="text-sm">{{ $order->pembayaran ? $order->pembayaran->metode_bayar : 'Belum dipilih' }}</p>
                             
                             @if(($order->pembayaran && $order->pembayaran->metode_bayar === 'Transfer' 
-                                    && (!$order->pembayaran->file_path || $order->pembayaran->status_bayar 
-                                    !== 'Lunas')) && $order->status_pesanan !== 'batal' || $order->status_pesanan 
-                                    === 'Selesai' || $order->status_pesanan === 'Diterima'
-                                ))
+                                    && (!$order->pembayaran->file_path && 
+                                    $order->pembayaran->status_bayar !== 'Lunas')) || (
+                                        $order->status_pesanan !== 'batal' && 
+                                        $order->status_pesanan !== 'Selesai' &&
+                                        $order->status_pesanan !== 'Diterima'
+                                    )
+                                )
                                 <!-- Upload Bukti Pembayaran -->
                                 <form action="{{ route('payment.upload', $order->id) }}" method="POST" enctype="multipart/form-data">
                                     @csrf
