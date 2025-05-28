@@ -15,6 +15,31 @@ class pembayaran extends Model
         'status_bayar',
         'file_path',
     ];
+    
+    // Map status values from database to PRD requirements
+    public function getStatusDisplay()
+    {
+        $status = $this->status_bayar;
+        
+        // Map existing database status to PRD requirements
+        $statusMap = [
+            'Belum di Bayar' => 'pending',
+            'Menunggu Dikonfirmasi' => 'pending',
+            'Lunas' => 'terkonfirmasi',
+        ];
+        
+        return $statusMap[$status] ?? $status;
+    }
+    
+    // Get the human-readable status message for display
+    public function getStatusMessage()
+    {
+        if ($this->getStatusDisplay() === 'pending') {
+            return "Menunggu Pembayaran Dinotice Admin Nih 😊!";
+        }
+        
+        return $this->status_bayar;
+    }
 
     public function pesanan()
     {
