@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PizzaController;
+use App\Http\Controllers\OrderStatusController;
 use App\Models\PasswordResetToken;
 use App\Http\Controllers\PizzaPanjangController;
 use App\Http\Controllers\MakananLainController;
@@ -150,10 +151,11 @@ Route::middleware('auth')->group(function () {
         return view('filament.pages.feedback');
     })->name('feedback');
 
-
-    Route::get('/status_pesanan', function () {
-        return view('filament.pages.status_pesanan');
-    })->name('status_pesanan');
+    // Order Status routes
+    Route::get('/status_pesanan', [OrderStatusController::class, 'index'])->name('status_pesanan');
+    Route::post('/status_pesanan/payment/{id}', [OrderStatusController::class, 'uploadPaymentProof'])->name('payment.upload');
+    Route::post('/status_pesanan/cancel/{id}', [OrderStatusController::class, 'cancelOrder'])->name('order.cancel');
+    Route::post('/status_pesanan/confirm/{id}', [OrderStatusController::class, 'confirmReceipt'])->name('order.confirm');
 
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
     Route::put('/profile/{id}', [ProfileController::class, 'update'])->name('profile.update');
